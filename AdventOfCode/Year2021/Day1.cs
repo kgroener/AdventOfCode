@@ -6,8 +6,19 @@ using AdventOfCode.Contracts;
 
 namespace AdventOfCode.Year2021
 {
-    class Day1 : IAdventDayPuzzle
+    internal class Day1 : IAdventDayPuzzle
     {
+        public string Description =>
+            @"The first order of business is to figure out how quickly the depth increases, just so you know what you're dealing with - you never know if the keys will get carried into deeper water by an ocean current or a fish or something.
+        To do this, count the number of times a depth measurement increases from the previous measurement. (There is no measurement before the first measurement.)";
+
+        public DateTime Date => new DateTime(2021, 12, 1);
+
+        public IEnumerable<IAdventDaySolution> GetSolutions()
+        {
+            return new IAdventDaySolution[] { new Solution1(), new Solution2() };
+        }
+
         private class Solution1 : IAdventDaySolution
         {
             public string Description => "How many measurements are larger than the previous measurement?";
@@ -53,16 +64,6 @@ namespace AdventOfCode.Year2021
 
                 return numberOfGroupedIncreasingDepths;
             }
-        }
-
-        public string Description =>
-            @"The first order of business is to figure out how quickly the depth increases, just so you know what you're dealing with - you never know if the keys will get carried into deeper water by an ocean current or a fish or something.
-        To do this, count the number of times a depth measurement increases from the previous measurement. (There is no measurement before the first measurement.)";
-        public DateTime Date => new DateTime(2021, 12, 1);
-
-        public IEnumerable<IAdventDaySolution> GetSolutions()
-        {
-            return new IAdventDaySolution[] { new Solution1(), new Solution2() };
         }
 
         private static readonly int[] DepthMeasurements = new[]
