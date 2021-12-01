@@ -8,6 +8,17 @@ namespace AdventOfCode.Year2021
 {
     internal class Day1 : IAdventDayPuzzle
     {
+        public Day1()
+        {
+            _depthMeasurements = OfficialDataSet;
+        }
+
+        internal Day1(int[] dataset)
+        {
+            _depthMeasurements = dataset;
+        }
+
+
         public string Description =>
             @"The first order of business is to figure out how quickly the depth increases, just so you know what you're dealing with - you never know if the keys will get carried into deeper water by an ocean current or a fish or something.
         To do this, count the number of times a depth measurement increases from the previous measurement. (There is no measurement before the first measurement.)";
@@ -26,7 +37,7 @@ namespace AdventOfCode.Year2021
 
             public object Solve()
             {
-                return DepthMeasurements
+                return _depthMeasurements
                     .Select(a => (Value: a, Increments: 0))
                     .Aggregate((a, b) => (b.Value > a.Value) ? (b.Value, a.Increments + 1) : (b.Value, a.Increments))
                     .Increments;
@@ -39,15 +50,16 @@ namespace AdventOfCode.Year2021
             public int Part => 2;
             public object Solve()
             {
-                return DepthMeasurements
-                    .Take(DepthMeasurements.Length - 2)
-                    .Select((a, i) => (Value: DepthMeasurements.Skip(i).Take(3).Sum(), Increments: 0))
+                return _depthMeasurements
+                    .Take(_depthMeasurements.Length - 2)
+                    .Select((a, i) => (Value: _depthMeasurements.Skip(i).Take(3).Sum(), Increments: 0))
                     .Aggregate((a, b) => (b.Value > a.Value) ? (b.Value, a.Increments + 1) : (b.Value, a.Increments))
                     .Increments;
             }
         }
 
-        private static readonly int[] DepthMeasurements = new[]
+        private static int[] _depthMeasurements;
+        private static readonly int[] OfficialDataSet = new[]
         {
             149,
             163,
