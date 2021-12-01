@@ -42,6 +42,7 @@ namespace AdventOfCode.Year2021
 
         internal class Solution2 : IAdventDaySolution
         {
+            private const int SLIDING_WINDOW_WIDTH = 3;
             private readonly int[] _dataset;
 
             public Solution2(int[] dataset)
@@ -53,8 +54,8 @@ namespace AdventOfCode.Year2021
             public int Part => 2;
             public object Solve()
             {
-                return Enumerable.Range(0, _dataset.Length-2)
-                    .Select(i => (Value: _dataset.Skip(i).Take(3).Sum(), Increments: 0))
+                return Enumerable.Range(0, _dataset.Length - (SLIDING_WINDOW_WIDTH - 1))
+                    .Select(i => (Value: _dataset[i..(i + SLIDING_WINDOW_WIDTH)].Sum(), Increments: 0))
                     .Aggregate((a, b) => (b.Value > a.Value) ? (b.Value, a.Increments + 1) : (b.Value, a.Increments))
                     .Increments;
             }
