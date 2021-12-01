@@ -53,9 +53,8 @@ namespace AdventOfCode.Year2021
             public int Part => 2;
             public object Solve()
             {
-                return _dataset
-                    .Take(_dataset.Length - 2)
-                    .Select((a, i) => (Value: _dataset.Skip(i).Take(3).Sum(), Increments: 0))
+                return Enumerable.Range(0, _dataset.Length-2)
+                    .Select(i => (Value: _dataset.Skip(i).Take(3).Sum(), Increments: 0))
                     .Aggregate((a, b) => (b.Value > a.Value) ? (b.Value, a.Increments + 1) : (b.Value, a.Increments))
                     .Increments;
             }
