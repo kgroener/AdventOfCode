@@ -19,6 +19,14 @@ namespace AdventOfCode.Year2021
             return new IAdventDaySolution[] { new Solution1(DepthMeasurements), new Solution2(DepthMeasurements) };
         }
 
+        private static int GetNumberOfIncrements(int[] dataset, int slidingWindowWidth = 1)
+        {
+            return Enumerable.Range(0, dataset.Length - (slidingWindowWidth - 1))
+                .Select(i => (Value: dataset[i..(i + slidingWindowWidth)].Sum(), Increments: 0))
+                .Aggregate((a, b) => (b.Value > a.Value) ? (b.Value, a.Increments + 1) : (b.Value, a.Increments))
+                .Increments;
+        }
+
         internal class Solution1 : IAdventDaySolution
         {
             private readonly int[] _dataset;
@@ -33,10 +41,7 @@ namespace AdventOfCode.Year2021
 
             public object Solve()
             {
-                return _dataset
-                    .Select(a => (Value: a, Increments: 0))
-                    .Aggregate((a, b) => (b.Value > a.Value) ? (b.Value, a.Increments + 1) : (b.Value, a.Increments))
-                    .Increments;
+                return GetNumberOfIncrements(_dataset);
             }
         }
 
@@ -54,10 +59,7 @@ namespace AdventOfCode.Year2021
             public int Part => 2;
             public object Solve()
             {
-                return Enumerable.Range(0, _dataset.Length - (SLIDING_WINDOW_WIDTH - 1))
-                    .Select(i => (Value: _dataset[i..(i + SLIDING_WINDOW_WIDTH)].Sum(), Increments: 0))
-                    .Aggregate((a, b) => (b.Value > a.Value) ? (b.Value, a.Increments + 1) : (b.Value, a.Increments))
-                    .Increments;
+                return GetNumberOfIncrements(_dataset, SLIDING_WINDOW_WIDTH);
             }
         }
 
