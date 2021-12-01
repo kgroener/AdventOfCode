@@ -26,18 +26,10 @@ namespace AdventOfCode.Year2021
 
             public object Solve()
             {
-                var numberOfIncreasingDepths = 0;
-                DepthMeasurements.Aggregate((a, b) =>
-                {
-                    if (b > a)
-                    {
-                        numberOfIncreasingDepths++;
-                    }
-
-                    return b;
-                });
-
-                return numberOfIncreasingDepths;
+                return DepthMeasurements
+                    .Select(a => (Value: a, Increments: 0))
+                    .Aggregate((a, b) => (b.Value > a.Value) ? (b.Value, a.Increments + 1) : (b.Value, a.Increments))
+                    .Increments;
             }
         }
 
@@ -47,22 +39,11 @@ namespace AdventOfCode.Year2021
             public int Part => 2;
             public object Solve()
             {
-                var numberOfGroupedIncreasingDepths = 0;
-                DepthMeasurements
-                    .Select((a, i) => DepthMeasurements.Skip(i).Take(3).ToArray())
-                    .Where(i => i.Length == 3)
-                    .Select(i => i.Sum())
-                    .Aggregate((a, b) =>
-                    {
-                        if (b > a)
-                        {
-                            numberOfGroupedIncreasingDepths++;
-                        }
-
-                        return b;
-                    });
-
-                return numberOfGroupedIncreasingDepths;
+                return DepthMeasurements
+                    .Take(DepthMeasurements.Length - 2)
+                    .Select((a, i) => (Value: DepthMeasurements.Skip(i).Take(3).Sum(), Increments: 0))
+                    .Aggregate((a, b) => (b.Value > a.Value) ? (b.Value, a.Increments + 1) : (b.Value, a.Increments))
+                    .Increments;
             }
         }
 
