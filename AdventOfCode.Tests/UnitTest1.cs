@@ -14,7 +14,7 @@ namespace AdventOfCode.Tests
         [Test]
         public void Year2021_Day1_Part1_ExampleIsCorrect()
         {
-            var day1 = new Day1(new[]
+            var day1 = new Day1.Solution1(new[]
             {
                 199,
                 200,
@@ -28,13 +28,13 @@ namespace AdventOfCode.Tests
                 263
             });
 
-            Assert.AreEqual(7, day1.GetSolutions().Single(s => s.Part == 1).Solve());
+            Assert.AreEqual(7, day1.Solve());
         }
 
         [Test]
         public void Year2021_Day1_Part2_ExampleIsCorrect()
         {
-            var day1 = new Day1(new[]
+            var day1 = new Day1.Solution2(new[]
             {
                 199,
                 200,
@@ -48,7 +48,7 @@ namespace AdventOfCode.Tests
                 263
             });
 
-            Assert.AreEqual(5, day1.GetSolutions().Single(s => s.Part == 2).Solve());
+            Assert.AreEqual(5, day1.Solve());
         }
     }
 }

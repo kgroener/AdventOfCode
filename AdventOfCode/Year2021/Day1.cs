@@ -8,17 +8,6 @@ namespace AdventOfCode.Year2021
 {
     internal class Day1 : IAdventDayPuzzle
     {
-        public Day1()
-        {
-            _depthMeasurements = OfficialDataSet;
-        }
-
-        internal Day1(int[] dataset)
-        {
-            _depthMeasurements = dataset;
-        }
-
-
         public string Description =>
             @"The first order of business is to figure out how quickly the depth increases, just so you know what you're dealing with - you never know if the keys will get carried into deeper water by an ocean current or a fish or something.
         To do this, count the number of times a depth measurement increases from the previous measurement. (There is no measurement before the first measurement.)";
@@ -27,39 +16,52 @@ namespace AdventOfCode.Year2021
 
         public IEnumerable<IAdventDaySolution> GetSolutions()
         {
-            return new IAdventDaySolution[] { new Solution1(), new Solution2() };
+            return new IAdventDaySolution[] { new Solution1(DepthMeasurements), new Solution2(DepthMeasurements) };
         }
 
-        private class Solution1 : IAdventDaySolution
+        internal class Solution1 : IAdventDaySolution
         {
+            private readonly int[] _dataset;
+
+            public Solution1(int[] dataset)
+            {
+                _dataset = dataset;
+            }
+
             public string Description => "How many measurements are larger than the previous measurement?";
             public int Part => 1;
 
             public object Solve()
             {
-                return _depthMeasurements
+                return _dataset
                     .Select(a => (Value: a, Increments: 0))
                     .Aggregate((a, b) => (b.Value > a.Value) ? (b.Value, a.Increments + 1) : (b.Value, a.Increments))
                     .Increments;
             }
         }
 
-        private class Solution2 : IAdventDaySolution
+        internal class Solution2 : IAdventDaySolution
         {
+            private readonly int[] _dataset;
+
+            public Solution2(int[] dataset)
+            {
+                _dataset = dataset;
+            }
+
             public string Description => "How many measurements are larger than the previous measurement considering a three-measurement sliding window?";
             public int Part => 2;
             public object Solve()
             {
-                return _depthMeasurements
-                    .Take(_depthMeasurements.Length - 2)
-                    .Select((a, i) => (Value: _depthMeasurements.Skip(i).Take(3).Sum(), Increments: 0))
+                return _dataset
+                    .Take(_dataset.Length - 2)
+                    .Select((a, i) => (Value: _dataset.Skip(i).Take(3).Sum(), Increments: 0))
                     .Aggregate((a, b) => (b.Value > a.Value) ? (b.Value, a.Increments + 1) : (b.Value, a.Increments))
                     .Increments;
             }
         }
 
-        private static int[] _depthMeasurements;
-        private static readonly int[] OfficialDataSet = new[]
+        private static readonly int[] DepthMeasurements = new[]
         {
             149,
             163,
