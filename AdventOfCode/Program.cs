@@ -8,7 +8,7 @@ namespace AdventOfCode
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             var originalForegroundColor = Console.ForegroundColor;
 
@@ -35,7 +35,6 @@ namespace AdventOfCode
                     Console.ForegroundColor = originalForegroundColor;
                     Console.WriteLine();
                 }
-
 
                 Console.WriteLine();
             }

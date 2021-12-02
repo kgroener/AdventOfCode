@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 namespace AdventOfCode.Tests
 {
-    public class Tests
+    public class Day1Tests
     {
         [SetUp]
         public void Setup()

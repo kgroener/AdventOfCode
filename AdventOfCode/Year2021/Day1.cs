@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using AdventOfCode.Contracts;
@@ -63,8 +62,7 @@ namespace AdventOfCode.Year2021
             }
         }
 
-        private static readonly int[] DepthMeasurements = new[]
-        {
+        private static readonly int[] DepthMeasurements = {
             149,
             163,
             165,
