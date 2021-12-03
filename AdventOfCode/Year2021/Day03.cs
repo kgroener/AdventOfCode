@@ -38,8 +38,8 @@ Each bit in the gamma rate can be determined by finding the most common bit in t
             public object Solve()
             {
                 var gammaRate = _data
-                    .Select(d => Enumerable.Range(0, _diagnosticSize).Select(i => (d >> i) & 1).ToArray())
-                    .Aggregate((a, b) => a.Zip(b, (x, y) => x + y).ToArray())
+                    .Select(d => Enumerable.Range(0, _diagnosticSize).Select(i => (d >> i) & 1))
+                    .Aggregate((a, b) => a.Zip(b, (x, y) => x + y))
                     .Select((d, i) => (d > _data.Length / 2 ? 1 : 0) << i)
                     .Sum();
                 var epsilonRate = ~gammaRate & ((int)Math.Pow(2, _diagnosticSize)-1);
