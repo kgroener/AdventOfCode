@@ -73,12 +73,11 @@ Each bit in the gamma rate can be determined by finding the most common bit in t
             private int GetLifeSupportData(bool removeLeastCommon)
             {
                 var data = new List<ushort>(_data);
-                int index = _diagnosticSize - 1;
-                while (data.Count != 1)
+                int index = _diagnosticSize;
+                while (data.Count != 1 && --index >= 0)
                 {
                     int mostCommon = data.Count(d => ((d >> index) & 1) == 1) >= data.Count / 2.0 ? 1 : 0;
                     data.RemoveAll(d => (((d >> index) & 1) == mostCommon) ^ removeLeastCommon);
-                    index--;
                 }
 
                 return data[0];
