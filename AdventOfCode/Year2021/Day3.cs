@@ -37,13 +37,12 @@ Each bit in the gamma rate can be determined by finding the most common bit in t
             public int Part => 1;
             public object Solve()
             {
-                int mask = (Enumerable.Range(0, _diagnosticSize).Select(i => 1 << i).Sum());
                 var gammaRate = _data
-                    .Select(d => Enumerable.Range(0,_diagnosticSize).Select(i => (d >> i) & 1).ToArray())
-                    .Aggregate((a, b) => a.Zip(b, (x,y) => x+y).ToArray())
-                    .Select((d, i) => ((d > _data.Length/2) ? 1 : 0)  << i)
+                    .Select(d => Enumerable.Range(0, _diagnosticSize).Select(i => (d >> i) & 1).ToArray())
+                    .Aggregate((a, b) => a.Zip(b, (x, y) => x + y).ToArray())
+                    .Select((d, i) => (d > _data.Length / 2 ? 1 : 0) << i)
                     .Sum();
-                var epsilonRate = ~gammaRate & mask;
+                var epsilonRate = ~gammaRate & ((int)Math.Pow(2, _diagnosticSize)-1);
 
                 return gammaRate * epsilonRate;
             }
@@ -65,26 +64,24 @@ Each bit in the gamma rate can be determined by finding the most common bit in t
             public int Part => 2;
             public object Solve()
             {
-                List<ushort> oxygenData = new List<ushort>(_data);
-                List<ushort> CO2Data = new List<ushort>(_data);
+                int oxygen = GetLifeSupportData(true);
+                int carbondioxide = GetLifeSupportData(false);
 
-                int index = _diagnosticSize-1;
-                while (oxygenData.Count != 1)
+                return oxygen * carbondioxide;
+            }
+
+            private int GetLifeSupportData(bool removeLeastCommon)
+            {
+                var data = new List<ushort>(_data);
+                int index = _diagnosticSize - 1;
+                while (data.Count != 1)
                 {
-                    int mostCommon = oxygenData.Count(d => ((d >> index) & 1) == 1) >= oxygenData.Count / 2.0 ? 1 : 0;
-                    oxygenData.RemoveAll(d => ((d >> index) & 1) != mostCommon);
+                    int mostCommon = data.Count(d => ((d >> index) & 1) == 1) >= data.Count / 2.0 ? 1 : 0;
+                    data.RemoveAll(d => (((d >> index) & 1) == mostCommon) ^ removeLeastCommon);
                     index--;
                 }
 
-                index = _diagnosticSize - 1;
-                while (CO2Data.Count != 1)
-                {
-                    int mostCommon = CO2Data.Count(d => ((d >> index) & 1) == 1) >= CO2Data.Count / 2.0 ? 1 : 0;
-                    CO2Data.RemoveAll(d => ((d >> index) & 1) == mostCommon);
-                    index--;
-                }
-
-                return oxygenData.Single() * CO2Data.Single();
+                return data[0];
             }
         }
 
