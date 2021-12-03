@@ -9,7 +9,7 @@ namespace AdventOfCode.Year2021
 {
     internal class Day2 : IAdventDayPuzzle
     {
-        public string Description => @"Nhe submarine seems to already have a planned course (your puzzle input). You should probably figure out where it's going.";
+        public string Description => @"The submarine seems to already have a planned course (your puzzle input). You should probably figure out where it's going.";
 
         public DateTime Date => new DateTime(2021, 12, 2);
         public IEnumerable<IAdventDaySolution> GetSolutions()
@@ -31,7 +31,7 @@ namespace AdventOfCode.Year2021
             public int Part => 1;
             public object Solve()
             {
-                var finalPosition = new[] { (instruction: "", value: 0) }
+                var finalPosition = new[] { (instruction: "START", value: 0) }
                     .Concat(_steps)
                     .Select(s => (
                         Instruction: s.instruction,
@@ -42,9 +42,9 @@ namespace AdventOfCode.Year2021
                     {
                         return b.Instruction switch
                         {
-                            "forward" => (b.Instruction, b.Value, a.Depth, a.HorizontalPosition + b.Value),
-                            "up" => (b.Instruction, b.Value, a.Depth - b.Value, a.HorizontalPosition),
-                            "down" => (b.Instruction, b.Value, a.Depth + b.Value, a.HorizontalPosition),
+                            "forward" => ("DONE", 0, a.Depth, a.HorizontalPosition + b.Value),
+                            "up" => ("DONE", 0, a.Depth - b.Value, a.HorizontalPosition),
+                            "down" => ("DONE", 0, a.Depth + b.Value, a.HorizontalPosition),
                             _ => throw new ArgumentException("Invalid instruction")
                         };
                     });
@@ -67,7 +67,7 @@ namespace AdventOfCode.Year2021
             public int Part => 2;
             public object Solve()
             {
-                var finalPosition = new[] { (instruction: "", value: 0) }
+                var finalPosition = new[] { (instruction: "START", value: 0) }
                     .Concat(_steps)
                     .Select(s => (
                         Instruction: s.instruction,
@@ -79,9 +79,9 @@ namespace AdventOfCode.Year2021
                     {
                         return b.Instruction switch
                         {
-                            "forward" => (b.Instruction, b.Value, a.Depth + (a.Aim * b.Value), a.HorizontalPosition + b.Value, a.Aim),
-                            "up" => (b.Instruction, b.Value, a.Depth, a.HorizontalPosition, a.Aim - b.Value),
-                            "down" => (b.Instruction, b.Value, a.Depth, a.HorizontalPosition, a.Aim + b.Value),
+                            "forward" => ("DONE", 0, a.Depth + (a.Aim * b.Value), a.HorizontalPosition + b.Value, a.Aim),
+                            "up" => ("DONE", 0, a.Depth, a.HorizontalPosition, a.Aim - b.Value),
+                            "down" => ("DONE", 0, a.Depth, a.HorizontalPosition, a.Aim + b.Value),
                             _ => throw new ArgumentException("Invalid instruction")
                         };
                     });
