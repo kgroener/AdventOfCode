@@ -5,7 +5,7 @@ using AdventOfCode.Contracts;
 
 namespace AdventOfCode.Year2021
 {
-    internal class Day1 : IAdventDayPuzzle
+    internal class Day01 : IAdventDayPuzzle
     {
         public string Description =>
             @"The first order of business is to figure out how quickly the depth increases, just so you know what you're dealing with - you never know if the keys will get carried into deeper water by an ocean current or a fish or something.

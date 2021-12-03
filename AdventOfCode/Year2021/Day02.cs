@@ -7,7 +7,7 @@ using AdventOfCode.Contracts;
 
 namespace AdventOfCode.Year2021
 {
-    internal class Day2 : IAdventDayPuzzle
+    internal class Day02 : IAdventDayPuzzle
     {
         public string Description => @"The submarine seems to already have a planned course (your puzzle input). You should probably figure out where it's going.";
 

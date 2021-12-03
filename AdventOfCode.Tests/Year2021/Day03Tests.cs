@@ -1,10 +1,9 @@
-using System.Linq;
 using AdventOfCode.Year2021;
 using NUnit.Framework;
 
-namespace AdventOfCode.Tests
+namespace AdventOfCode.Tests.Year2021
 {
-    public class Day3Tests
+    public class Day03Tests
     {
         [SetUp]
         public void Setup()
@@ -14,7 +13,7 @@ namespace AdventOfCode.Tests
         [Test]
         public void Year2021_Day3_Part1_ExampleIsCorrect()
         {
-            var solution = new Day3.Solution1(new ushort[]
+            var solution = new Day03.Solution1(new ushort[]
             {
                 0b00100,
                 0b11110,
@@ -36,7 +35,7 @@ namespace AdventOfCode.Tests
         [Test]
         public void Year2021_Day3_Part2_ExampleIsCorrect()
         {
-            var solution = new Day3.Solution2(new ushort[]
+            var solution = new Day03.Solution2(new ushort[]
             {
                 0b00100,
                 0b11110,

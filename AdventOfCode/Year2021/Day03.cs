@@ -6,7 +6,7 @@ using AdventOfCode.Contracts;
 
 namespace AdventOfCode.Year2021
 {
-    class Day3 : IAdventDayPuzzle
+    class Day03 : IAdventDayPuzzle
     {
         public string Description => @"The submarine has been making some odd creaking noises, so you ask it to produce a diagnostic report just in case.
 

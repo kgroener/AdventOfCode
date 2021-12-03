@@ -1,10 +1,9 @@
-using System.Linq;
 using AdventOfCode.Year2021;
 using NUnit.Framework;
 
-namespace AdventOfCode.Tests
+namespace AdventOfCode.Tests.Year2021
 {
-    public class Day2Tests
+    public class Day02Tests
     {
         [SetUp]
         public void Setup()
@@ -14,7 +13,7 @@ namespace AdventOfCode.Tests
         [Test]
         public void Year2021_Day2_Part1_ExampleIsCorrect()
         {
-            var solution = new Day2.Solution1(new[]
+            var solution = new Day02.Solution1(new[]
             {
                 ("forward", 5),
                 ("down", 5),
@@ -30,7 +29,7 @@ namespace AdventOfCode.Tests
         [Test]
         public void Year2021_Day2_Part2_ExampleIsCorrect()
         {
-            var solution = new Day2.Solution2(new[]
+            var solution = new Day02.Solution2(new[]
             {
                 ("forward", 5),
                 ("down", 5),
