@@ -16,7 +16,7 @@ Maybe it wants to play bingo?";
 
         public IEnumerable<IAdventDaySolution> GetSolutions()
         {
-            return new IAdventDaySolution[] { new Solution1(Boards, Numbers) };
+            return new IAdventDaySolution[] { new Solution1(Boards, Numbers), new Solution2(Boards, Numbers) };
         }
 
         internal class Solution1 : IAdventDaySolution
@@ -56,6 +56,46 @@ Maybe it wants to play bingo?";
                     .Aggregate((a,b) => a.NumberIndexForWin < b.NumberIndexForWin ? a: b);
 
                 return fastestBoard.Board.SelectMany(b => b).Except(_numbers.Take(fastestBoard.NumberIndexForWin+1)).Sum() * _numbers.ElementAt(fastestBoard.NumberIndexForWin);
+            }
+        }
+
+        internal class Solution2 : IAdventDaySolution
+        {
+            private readonly int[][][] _boards;
+            private readonly int[] _numbers;
+
+            public Solution2(int[][][] boards, int[] numbers)
+            {
+                _boards = boards;
+                _numbers = numbers;
+            }
+
+            public string Description => @"You aren't sure how many bingo boards a giant squid could play at once, so rather than waste time counting its arms, the safe thing to do is to figure out which board will win last and choose that one. That way, no matter which boards it picks, it will win for sure.";
+
+            public int Part => 2;
+
+            public object Solve()
+            {
+                var numberIndexes = _numbers.Select((v, i) => (Index: i, Value: v)).ToDictionary(kv => kv.Value, kv => kv.Index);
+
+                var fastestBoard = _boards.Select((b, i) => (
+                    BoardIndex: i,
+                    Board: b,
+                    NumberIndexForWin: Math.Min(
+                        // Get first win for rows
+                        b
+                        .Where(r => r.Intersect(_numbers).Count() == r.Length)
+                        .Min(r => r.Max(v => numberIndexes[v])),
+                        // Get first win for columns
+                        Enumerable
+                        .Range(0, b.Length)
+                        .Select(i => b.Select(r => r[i]).ToArray())
+                        .Where(c => c.Intersect(_numbers).Count() == c.Length)
+                        .Min(r => r.Max(v => numberIndexes[v])))
+                    ))
+                    .Aggregate((a, b) => a.NumberIndexForWin > b.NumberIndexForWin ? a : b);
+
+                return fastestBoard.Board.SelectMany(b => b).Except(_numbers.Take(fastestBoard.NumberIndexForWin + 1)).Sum() * _numbers.ElementAt(fastestBoard.NumberIndexForWin);
             }
         }
 
