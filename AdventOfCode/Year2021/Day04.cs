@@ -38,8 +38,7 @@ Maybe it wants to play bingo?";
             {
                 var numberIndexes = _numbers.Select((v,i) => (Index: i, Value: v)).ToDictionary(kv => kv.Value, kv => kv.Index);
 
-                var fastestBoard = _boards.Select((b, i) => (
-                    BoardIndex: i,
+                var fastestBoard = _boards.Select((b) => (
                     Board: b,
                     NumberIndexForWin: Math.Min(
                         // Get first win for rows
@@ -78,8 +77,7 @@ Maybe it wants to play bingo?";
             {
                 var numberIndexes = _numbers.Select((v, i) => (Index: i, Value: v)).ToDictionary(kv => kv.Value, kv => kv.Index);
 
-                var fastestBoard = _boards.Select((b, i) => (
-                    BoardIndex: i,
+                var fastestBoard = _boards.Select((b) => (
                     Board: b,
                     NumberIndexForWin: Math.Min(
                         // Get first win for rows
