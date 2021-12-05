@@ -33,16 +33,13 @@ namespace AdventOfCode.Year2021
             {
                 return _lines
                     .Where(l => l.X1 == l.X2 || l.Y1 == l.Y2)
-                    .Select(l => (
-                    X: Enumerable
+                    .SelectMany(l => 
+                    Enumerable // x coordinates
                         .Range(0, 1 + Math.Max(Math.Abs(l.X2 - l.X1), Math.Abs(l.Y2 - l.Y1)))
                         .Select(x => (x * Math.Sign(l.X2 - l.X1)) + l.X1)
-                        .ToArray(),
-                    Y: Enumerable
+                    .Zip(Enumerable // y coordinates
                         .Range(0, 1 + Math.Max(Math.Abs(l.X2 - l.X1), Math.Abs(l.Y2 - l.Y1)))
-                        .Select(y => (y * Math.Sign(l.Y2 - l.Y1)) + l.Y1)
-                        .ToArray()))
-                    .SelectMany(l => l.X.Zip(l.Y, (x, y) => (X: x, Y: y)))
+                        .Select(y => (y * Math.Sign(l.Y2 - l.Y1)) + l.Y1)))
                     .GroupBy(p => p)
                     .Count(g => g.Count() >= 2);
             }
@@ -64,16 +61,13 @@ namespace AdventOfCode.Year2021
             {
                 return _lines
                     //.Where(l => l.X1 == l.X2 || l.Y1 == l.Y2)
-                    .Select(l => (
-                    X: Enumerable
-                        .Range(0, 1+Math.Max(Math.Abs(l.X2 - l.X1), Math.Abs(l.Y2-l.Y1)))
-                        .Select(x => (x * Math.Sign(l.X2-l.X1))+l.X1)
-                        .ToArray(), 
-                    Y: Enumerable
-                        .Range(0, 1+Math.Max(Math.Abs(l.X2 - l.X1), Math.Abs(l.Y2-l.Y1)))
-                        .Select(y => (y * Math.Sign(l.Y2-l.Y1))+l.Y1)
-                        .ToArray()))
-                    .SelectMany(l => l.X.Zip(l.Y, (x, y) => (X: x, Y: y)))
+                    .SelectMany(l =>
+                    Enumerable // x coordinates
+                        .Range(0, 1 + Math.Max(Math.Abs(l.X2 - l.X1), Math.Abs(l.Y2 - l.Y1)))
+                        .Select(x => (x * Math.Sign(l.X2 - l.X1)) + l.X1)
+                    .Zip(Enumerable // y coordinates
+                        .Range(0, 1 + Math.Max(Math.Abs(l.X2 - l.X1), Math.Abs(l.Y2 - l.Y1)))
+                        .Select(y => (y * Math.Sign(l.Y2 - l.Y1)) + l.Y1)))
                     .GroupBy(p => p)
                     .Count(g => g.Count() >= 2);
             }
