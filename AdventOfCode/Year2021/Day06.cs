@@ -59,10 +59,13 @@ namespace AdventOfCode.Year2021
 
             private long GetAmountOfOffspring(int days)
             {
+                const int TIME_TO_MATURE = 9;
+                const int OFFSPRING_INTERVAL = 7;
+
                 return _offspringMapping.GetOrAdd(days, (d) =>
                 {
-                    long offspring = 1 + ((_days - (d + 1)) / 7);
-                    for (int day = d + 9; day < _days; day += 7)
+                    long offspring = 1 + ((_days - (d + 1)) / OFFSPRING_INTERVAL);
+                    for (int day = d + TIME_TO_MATURE; day < _days; day += OFFSPRING_INTERVAL)
                     {
                         offspring += GetAmountOfOffspring(day);
                     }
