@@ -10,6 +10,9 @@ namespace AdventOfCode.Year2021
 {
     class Day06 : IAdventDayPuzzle
     {
+        private const int TIME_TO_MATURE = 9;
+        private const int OFFSPRING_INTERVAL = 7;
+
         public string Description =>
             @"A massive school of glowing lanternfish swims past. They must spawn quickly to reach such large numbers - maybe exponentially quickly? You should model their growth rate to be sure.";
 
@@ -33,7 +36,7 @@ namespace AdventOfCode.Year2021
             public object Solve()
             {
                 return Enumerable.Range(0, 80)
-                    .Aggregate(_population, (p, i) => p.SelectMany(f => f == 0 ? new[] { 6, 8 } : new[] { f - 1 }).ToArray())
+                    .Aggregate(_population, (p, i) => p.SelectMany(f => f == 0 ? new[] { OFFSPRING_INTERVAL-1, TIME_TO_MATURE-1 } : new[] { f - 1 }).ToArray())
                     .Length;
             }
         }
@@ -59,9 +62,6 @@ namespace AdventOfCode.Year2021
 
             private long GetAmountOfOffspring(int days)
             {
-                const int TIME_TO_MATURE = 9;
-                const int OFFSPRING_INTERVAL = 7;
-
                 return _offspringMapping.GetOrAdd(days, (d) =>
                 {
                     long offspring = 1 + ((_days - (d + 1)) / OFFSPRING_INTERVAL);
