@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using AdventOfCode.Contracts;
 
 namespace AdventOfCode.Year2021
@@ -41,29 +42,33 @@ namespace AdventOfCode.Year2021
         {
             private readonly int[] _population;
             private readonly ConcurrentDictionary<int, long> _offspringMapping = new ConcurrentDictionary<int, long>();
-            public Solution2(int[] population)
+            private readonly int _days;
+
+            public Solution2(int[] population, int days = 256)
             {
                 _population = population;
+                _days = days;
             }
 
             public string Description => @"Find a way to simulate lanternfish. How many lanternfish would there be after 256 days?";
             public int Part => 2;
             public object Solve()
             {
-                return _population.Sum(GetAmountOfOffspring) + _population.Length;
+                return _population.AsParallel().Sum(GetAmountOfOffspring) + _population.Length;
             }
 
             private long GetAmountOfOffspring(int days)
             {
-                const int MAX_DAYS = 256;
-
-                long offspring = 1 + ((MAX_DAYS - (days + 1)) / 7);
-                for (int day = days + 9; day < MAX_DAYS; day += 7)
+                return _offspringMapping.GetOrAdd(days, (d) =>
                 {
-                    offspring += _offspringMapping.GetOrAdd(day, GetAmountOfOffspring);
-                }
+                    long offspring = 1 + ((_days - (d + 1)) / 7);
+                    for (int day = d + 9; day < _days; day += 7)
+                    {
+                        offspring += GetAmountOfOffspring(day);
+                    }
 
-                return offspring;
+                    return offspring;
+                });
             }
         }
 
