@@ -8,7 +8,7 @@ using AdventOfCode.Contracts;
 
 namespace AdventOfCode.Year2021
 {
-    class Day06 : IAdventDayPuzzle
+    internal class Day06 : IAdventDayPuzzle
     {
         private const int TIME_TO_MATURE = 9;
         private const int OFFSPRING_INTERVAL = 7;
@@ -17,6 +17,17 @@ namespace AdventOfCode.Year2021
             @"A massive school of glowing lanternfish swims past. They must spawn quickly to reach such large numbers - maybe exponentially quickly? You should model their growth rate to be sure.";
 
         public DateTime Date => new DateTime(2021, 12, 6);
+
+        private static int[] Population => new[]
+        {
+            1, 2, 4, 5, 5, 5, 2, 1, 3, 1, 4, 3, 2, 1, 5, 5, 1, 2, 3, 4, 4, 1, 2, 3, 2, 1, 4, 4, 1, 5, 5, 1, 3, 4, 4, 4, 1, 2, 2, 5, 1, 5, 5, 3, 2, 3, 1, 1, 3, 5, 1, 1, 2, 4, 2, 3,
+            1, 1, 2, 1, 3, 1, 2, 1, 1, 2, 1, 2, 2, 1, 1, 1, 1, 5, 4, 5, 2, 1, 3, 2, 4, 1, 1, 3, 4, 1, 4, 1, 5, 1, 4, 1, 5, 3, 2, 3, 2, 2, 4, 4, 3, 3, 4, 3, 4, 4, 3, 4, 5, 1, 2, 5,
+            2, 1, 5, 5, 1, 3, 4, 2, 2, 4, 2, 2, 1, 3, 2, 5, 5, 1, 3, 3, 4, 3, 5, 3, 5, 5, 4, 5, 1, 1, 4, 1, 4, 5, 1, 1, 1, 4, 1, 1, 4, 2, 1, 4, 1, 3, 4, 4, 3, 1, 2, 2, 4, 3, 3, 2,
+            2, 2, 3, 5, 5, 2, 3, 1, 5, 1, 1, 1, 1, 3, 1, 4, 1, 4, 1, 2, 5, 3, 2, 4, 4, 1, 3, 1, 1, 1, 3, 4, 4, 1, 1, 2, 1, 4, 3, 4, 2, 2, 3, 2, 4, 3, 1, 5, 1, 3, 1, 4, 5, 5, 3, 5,
+            1, 3, 5, 5, 4, 2, 3, 2, 4, 1, 3, 2, 2, 2, 1, 3, 4, 2, 5, 2, 5, 3, 5, 5, 1, 1, 1, 2, 2, 3, 1, 4, 4, 4, 5, 4, 5, 5, 1, 4, 5, 5, 4, 1, 1, 5, 3, 3, 1, 4, 1, 3, 1, 1, 4, 1,
+            5, 2, 3, 2, 3, 1, 2, 2, 2, 1, 1, 5, 1, 4, 5, 2, 4, 2, 2, 3
+        };
+
         public IEnumerable<IAdventDaySolution> GetSolutions()
         {
             return new IAdventDaySolution[] { new Solution1(Population), new Solution2(Population) };
@@ -33,10 +44,11 @@ namespace AdventOfCode.Year2021
 
             public string Description => @"Find a way to simulate lanternfish. How many lanternfish would there be after 80 days?";
             public int Part => 1;
+
             public object Solve()
             {
                 return Enumerable.Range(0, 80)
-                    .Aggregate(_population, (p, i) => p.SelectMany(f => f == 0 ? new[] { OFFSPRING_INTERVAL-1, TIME_TO_MATURE-1 } : new[] { f - 1 }).ToArray())
+                    .Aggregate(_population, (p, i) => p.SelectMany(f => f == 0 ? new[] { OFFSPRING_INTERVAL - 1, TIME_TO_MATURE - 1 } : new[] { f - 1 }).ToArray())
                     .Length;
             }
         }
@@ -55,9 +67,10 @@ namespace AdventOfCode.Year2021
 
             public string Description => @"Find a way to simulate lanternfish. How many lanternfish would there be after 256 days?";
             public int Part => 2;
+
             public object Solve()
             {
-                return _population.AsParallel().Sum(GetAmountOfOffspring) + _population.Length;
+                return _population.Sum(GetAmountOfOffspring) + _population.Length;
             }
 
             private long GetAmountOfOffspring(int days)
@@ -74,15 +87,5 @@ namespace AdventOfCode.Year2021
                 });
             }
         }
-
-        private static int[] Population => new[]
-        {
-            1, 2, 4, 5, 5, 5, 2, 1, 3, 1, 4, 3, 2, 1, 5, 5, 1, 2, 3, 4, 4, 1, 2, 3, 2, 1, 4, 4, 1, 5, 5, 1, 3, 4, 4, 4, 1, 2, 2, 5, 1, 5, 5, 3, 2, 3, 1, 1, 3, 5, 1, 1, 2, 4, 2, 3,
-            1, 1, 2, 1, 3, 1, 2, 1, 1, 2, 1, 2, 2, 1, 1, 1, 1, 5, 4, 5, 2, 1, 3, 2, 4, 1, 1, 3, 4, 1, 4, 1, 5, 1, 4, 1, 5, 3, 2, 3, 2, 2, 4, 4, 3, 3, 4, 3, 4, 4, 3, 4, 5, 1, 2, 5,
-            2, 1, 5, 5, 1, 3, 4, 2, 2, 4, 2, 2, 1, 3, 2, 5, 5, 1, 3, 3, 4, 3, 5, 3, 5, 5, 4, 5, 1, 1, 4, 1, 4, 5, 1, 1, 1, 4, 1, 1, 4, 2, 1, 4, 1, 3, 4, 4, 3, 1, 2, 2, 4, 3, 3, 2,
-            2, 2, 3, 5, 5, 2, 3, 1, 5, 1, 1, 1, 1, 3, 1, 4, 1, 4, 1, 2, 5, 3, 2, 4, 4, 1, 3, 1, 1, 1, 3, 4, 4, 1, 1, 2, 1, 4, 3, 4, 2, 2, 3, 2, 4, 3, 1, 5, 1, 3, 1, 4, 5, 5, 3, 5,
-            1, 3, 5, 5, 4, 2, 3, 2, 4, 1, 3, 2, 2, 2, 1, 3, 4, 2, 5, 2, 5, 3, 5, 5, 1, 1, 1, 2, 2, 3, 1, 4, 4, 4, 5, 4, 5, 5, 1, 4, 5, 5, 4, 1, 1, 5, 3, 3, 1, 4, 1, 3, 1, 1, 4, 1,
-            5, 2, 3, 2, 3, 1, 2, 2, 2, 1, 1, 5, 1, 4, 5, 2, 4, 2, 2, 3
-        };
     }
 }
