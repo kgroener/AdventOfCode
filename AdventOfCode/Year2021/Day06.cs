@@ -1,0 +1,80 @@
+﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using AdventOfCode.Contracts;
+
+namespace AdventOfCode.Year2021
+{
+    class Day06 : IAdventDayPuzzle
+    {
+        public string Description =>
+            @"A massive school of glowing lanternfish swims past. They must spawn quickly to reach such large numbers - maybe exponentially quickly? You should model their growth rate to be sure.";
+
+        public DateTime Date => new DateTime(2021, 12, 6);
+        public IEnumerable<IAdventDaySolution> GetSolutions()
+        {
+            return new IAdventDaySolution[] { new Solution1(Population), new Solution2(Population) };
+        }
+
+        internal class Solution1 : IAdventDaySolution
+        {
+            private readonly int[] _population;
+
+            public Solution1(int[] population)
+            {
+                _population = population;
+            }
+
+            public string Description => @"Find a way to simulate lanternfish. How many lanternfish would there be after 80 days?";
+            public int Part => 1;
+            public object Solve()
+            {
+                return Enumerable.Range(0, 80)
+                    .Aggregate(_population, (p, i) => p.SelectMany(f => f == 0 ? new[] { 6, 8 } : new[] { f - 1 }).ToArray())
+                    .Length;
+            }
+        }
+
+        internal class Solution2 : IAdventDaySolution
+        {
+            private readonly int[] _population;
+            private readonly ConcurrentDictionary<int, long> _offspringMapping = new ConcurrentDictionary<int, long>();
+            public Solution2(int[] population)
+            {
+                _population = population;
+            }
+
+            public string Description => @"Find a way to simulate lanternfish. How many lanternfish would there be after 256 days?";
+            public int Part => 2;
+            public object Solve()
+            {
+                return _population.Sum(GetAmountOfOffspring) + _population.Length;
+            }
+
+            private long GetAmountOfOffspring(int days)
+            {
+                const int MAX_DAYS = 256;
+
+                long offspring = 1 + ((MAX_DAYS - (days + 1)) / 7);
+                for (int day = days + 9; day < MAX_DAYS; day += 7)
+                {
+                    offspring += _offspringMapping.GetOrAdd(day, GetAmountOfOffspring);
+                }
+
+                return offspring;
+            }
+        }
+
+        private static int[] Population => new[]
+        {
+            1, 2, 4, 5, 5, 5, 2, 1, 3, 1, 4, 3, 2, 1, 5, 5, 1, 2, 3, 4, 4, 1, 2, 3, 2, 1, 4, 4, 1, 5, 5, 1, 3, 4, 4, 4, 1, 2, 2, 5, 1, 5, 5, 3, 2, 3, 1, 1, 3, 5, 1, 1, 2, 4, 2, 3,
+            1, 1, 2, 1, 3, 1, 2, 1, 1, 2, 1, 2, 2, 1, 1, 1, 1, 5, 4, 5, 2, 1, 3, 2, 4, 1, 1, 3, 4, 1, 4, 1, 5, 1, 4, 1, 5, 3, 2, 3, 2, 2, 4, 4, 3, 3, 4, 3, 4, 4, 3, 4, 5, 1, 2, 5,
+            2, 1, 5, 5, 1, 3, 4, 2, 2, 4, 2, 2, 1, 3, 2, 5, 5, 1, 3, 3, 4, 3, 5, 3, 5, 5, 4, 5, 1, 1, 4, 1, 4, 5, 1, 1, 1, 4, 1, 1, 4, 2, 1, 4, 1, 3, 4, 4, 3, 1, 2, 2, 4, 3, 3, 2,
+            2, 2, 3, 5, 5, 2, 3, 1, 5, 1, 1, 1, 1, 3, 1, 4, 1, 4, 1, 2, 5, 3, 2, 4, 4, 1, 3, 1, 1, 1, 3, 4, 4, 1, 1, 2, 1, 4, 3, 4, 2, 2, 3, 2, 4, 3, 1, 5, 1, 3, 1, 4, 5, 5, 3, 5,
+            1, 3, 5, 5, 4, 2, 3, 2, 4, 1, 3, 2, 2, 2, 1, 3, 4, 2, 5, 2, 5, 3, 5, 5, 1, 1, 1, 2, 2, 3, 1, 4, 4, 4, 5, 4, 5, 5, 1, 4, 5, 5, 4, 1, 1, 5, 3, 3, 1, 4, 1, 3, 1, 1, 4, 1,
+            5, 2, 3, 2, 3, 1, 2, 2, 2, 1, 1, 5, 1, 4, 5, 2, 4, 2, 2, 3
+        };
+    }
+}
