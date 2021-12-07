@@ -40,7 +40,7 @@ namespace AdventOfCode.Tests.Year2021
         {
             var solution = new Day07.Solution2(Day07.Positions);
 
-            Assert.AreEqual(168, solution.Solve());
+            Assert.AreEqual(86397080, solution.Solve());
         }
     }
 }
