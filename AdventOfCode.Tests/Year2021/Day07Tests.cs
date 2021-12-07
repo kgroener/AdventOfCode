@@ -1,3 +1,5 @@
+using System;
+using System.Diagnostics;
 using AdventOfCode.Year2021;
 using NUnit.Framework;
 
@@ -41,6 +43,21 @@ namespace AdventOfCode.Tests.Year2021
             var solution = new Day07.Solution2(Day07.Positions);
 
             Assert.AreEqual(86397080, solution.Solve());
+        }
+
+        [Test]
+        public void Year2021_Day7_Part2_Benchmark()
+        {
+            var solution = new Day07.Solution2(Day07.Positions);
+
+            var sw = Stopwatch.StartNew();
+            for (int i = 0; i < 10000; i++)
+            {
+                solution.Solve();
+            }
+            sw.Stop();
+
+            Console.WriteLine($"Solution took an average of {sw.Elapsed.TotalMilliseconds/10000} ms");
         }
     }
 }
