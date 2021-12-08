@@ -99,26 +99,10 @@ namespace AdventOfCode.Year2021
 
             private int Solve((string[] Patterns, string[] Output) input)
             {
-                var segmentOptions = new List<List<char>>()
-                {
-                    new List<char>("abcdefg"),
-                    new List<char>("abcdefg"),
-                    new List<char>("abcdefg"),
-                    new List<char>("abcdefg"),
-                    new List<char>("abcdefg"),
-                    new List<char>("abcdefg"),
-                    new List<char>("abcdefg"),
-                };
-
                 var patterns = input.Patterns.Concat(input.Output).Distinct().OrderBy(i => i.Length).ToArray();
-
-                var numberOptions = Enumerable
-                    .Range(0, 10)
-                    .Select(i => new List<string>(patterns.Where(p => p.Length == DigitToSegmentCountMapping[i].Count(c => c == '1'))))
-                    .ToArray();
-                
+                var segmentOptions = Enumerable.Range(0, 7).Select(_ => new List<char>(@"abcdefg")).ToArray();
+                var numberOptions = Enumerable.Range(0, 10).Select(i => new List<string>(patterns.Where(p => p.Length == DigitToSegmentCountMapping[i].Count(c => c == '1')))).ToArray();
                 var mappings = new Dictionary<string, int>();
-
                 var patternsToDecrypt = new Queue<string>(patterns);
 
                 while (patternsToDecrypt.TryDequeue(out var pattern) && !input.Output.All(o => mappings.ContainsKey(o)))
