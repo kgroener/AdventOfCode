@@ -17,18 +17,18 @@ namespace AdventOfCode.Year2021
             return new IAdventDaySolution[] { new Solution1(Segments), new Solution2(Segments) };
         }
 
-        private static Dictionary<int, string> DigitToSegmentCountMapping => new Dictionary<int, string>()
+        private static Dictionary<int, int> DigitToSegmentCountMapping => new Dictionary<int, int>()
         {
-            { 0, "1111110" },
-            { 1, "0110000" },
-            { 2, "1101101" },
-            { 3, "1111001" },
-            { 4, "0110011" },
-            { 5, "1011011" },
-            { 6, "1011111" },
-            { 7, "1110000" },
-            { 8, "1111111" },
-            { 9, "1111011" },
+            { 0, 6 },
+            { 1, 2 },
+            { 2, 5 },
+            { 3, 5 },
+            { 4, 4 },
+            { 5, 5 },
+            { 6, 6 },
+            { 7, 3 },
+            { 8, 7 },
+            { 9, 6 },
         };
 
         private static Dictionary<string, int> SegmentToDigitMapping => new Dictionary<string, int>()
@@ -64,10 +64,10 @@ namespace AdventOfCode.Year2021
             public object Solve()
             {
                 return _signalPatterns.SelectMany(s => s.Output).Count(i =>
-                    i.Length == 2 || //1
-                    i.Length == 4 || //4
-                    i.Length == 3 || //7
-                    i.Length == 7    //8
+                    i.Length == DigitToSegmentCountMapping[1] ||
+                    i.Length == DigitToSegmentCountMapping[4] ||
+                    i.Length == DigitToSegmentCountMapping[7] ||
+                    i.Length == DigitToSegmentCountMapping[8]   
                 );
             }
         }
@@ -101,7 +101,7 @@ namespace AdventOfCode.Year2021
             {
                 var patterns = input.Patterns.Concat(input.Output).Distinct().OrderBy(i => i.Length).ToArray();
                 var segmentOptions = Enumerable.Range(0, 7).Select(_ => new List<char>(@"abcdefg")).ToArray();
-                var numberOptions = Enumerable.Range(0, 10).Select(i => new List<string>(patterns.Where(p => p.Length == DigitToSegmentCountMapping[i].Count(c => c == '1')))).ToArray();
+                var numberOptions = Enumerable.Range(0, 10).Select(i => new List<string>(patterns.Where(p => p.Length == DigitToSegmentCountMapping[i]))).ToArray();
                 var mappings = new Dictionary<string, int>();
                 var patternsToDecrypt = new Queue<string>(patterns);
 
