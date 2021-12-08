@@ -108,8 +108,6 @@ namespace AdventOfCode.Year2021
                 while (patternsToDecrypt.TryDequeue(out var pattern) && !input.Output.All(o => mappings.ContainsKey(o)))
                 {
                     var possibleSegments = SegmentToDigitMapping
-                            // Filter out numbers that do not match amount of segments that are on
-                        .Where(s => s.Key.Count(c => c == '1') == pattern.Length)
                             // Filter out numbers that are no longer options
                         .Where(s => numberOptions[s.Value].Contains(pattern))
                             // Filter out segments that can not match the given pattern
