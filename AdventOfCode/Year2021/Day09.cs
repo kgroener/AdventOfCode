@@ -55,8 +55,8 @@ If you can model how the smoke flows through the caves, you might be able to avo
                 _dimensions = (Length: _heightMap.GetLength(0), Width: _heightMap.GetLength(1));
             }
 
-            public string Description => @"Find all of the low points on your heightmap. What is the sum of the risk levels of all low points on your heightmap?";
-            public int Part => 1;
+            public string Description => @"What do you get if you multiply together the sizes of the three largest basins?";
+            public int Part => 2;
             public object Solve()
             {
                 return _heightMap
