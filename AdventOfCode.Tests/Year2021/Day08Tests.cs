@@ -52,6 +52,7 @@ namespace AdventOfCode.Tests.Year2021
         }
 
         [Test]
+        [Ignore("Only for benchmark purposes")]
         public void Year2021_Day8_Part2_Benchmark()
         {
             var solution = new Day08.Solution2(Day08.Segments);
