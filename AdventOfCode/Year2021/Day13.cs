@@ -81,23 +81,12 @@ What code do you use to activate the infrared thermal imaging camera system?";
             {
                 var map = new HashSet<(int X, int Y)>(_dots);
 
-                foreach ((int x, int y) in _instructions)
+                foreach ((int foldX, int foldY) in _instructions)
                 {
-                    if (x > 0)
+                    foreach (var dot in map.Where(d => (foldX > 0 && d.X > foldX) || (foldY > 0 && d.Y > foldY)).ToArray())
                     {
-                        foreach (var dot in map.Where(d => d.X > x).ToArray())
-                        {
-                            map.Remove(dot);
-                            map.Add((x - (dot.X - x), dot.Y));
-                        }
-                    }
-                    else
-                    {
-                        foreach (var dot in map.Where(d => d.Y > y).ToArray())
-                        {
-                            map.Remove(dot);
-                            map.Add((dot.X, y - (dot.Y - y)));
-                        }
+                        map.Remove(dot);
+                        map.Add((Math.Abs(foldX - (dot.X - foldX)),  Math.Abs(foldY - (dot.Y - foldY))));
                     }
                 }
 
