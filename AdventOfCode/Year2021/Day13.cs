@@ -21,7 +21,7 @@ Apparently, the Elves have never used this feature. To your surprise, you manage
         public IEnumerable<IAdventDaySolution> GetSolutions()
         {
             return new IAdventDaySolution[] { new Solution1(Dots, FoldInstructions[0]), new Solution2(Dots, FoldInstructions) };
-        } 
+        }
 
 
         internal class Solution1 : IAdventDaySolution
@@ -39,24 +39,22 @@ Apparently, the Elves have never used this feature. To your surprise, you manage
             public int Part => 1;
             public object Solve()
             {
-                var map = _dots.ToDictionary(d => d, v => true);
+                var map = new HashSet<(int X, int Y)>(_dots);
 
                 if (_instruction.X > 0)
                 {
-                    foreach (var dot in map.Where(d => d.Key.X > _instruction.X).ToArray())
+                    foreach (var dot in map.Where(d => d.X > _instruction.X).ToArray())
                     {
-                        var newX = _instruction.X - (dot.Key.X - _instruction.X);
-                        map[(newX, dot.Key.Y)] = true;
-                        map.Remove(dot.Key);
+                        map.Remove(dot);
+                        map.Add((_instruction.X - (dot.X - _instruction.X), dot.Y));
                     }
                 }
                 else
                 {
-                    foreach (var dot in map.Where(d => d.Key.Y > _instruction.Y).ToArray())
+                    foreach (var dot in map.Where(d => d.Y > _instruction.Y).ToArray())
                     {
-                        var newY = _instruction.Y - (dot.Key.Y - _instruction.Y);
-                        map[(dot.Key.X, newY)] = true;
-                        map.Remove(dot.Key);
+                        map.Remove(dot);
+                        map.Add((dot.X, _instruction.Y - (dot.Y - _instruction.Y)));
                     }
                 }
 
@@ -81,32 +79,30 @@ What code do you use to activate the infrared thermal imaging camera system?";
             public int Part => 2;
             public object Solve()
             {
-                var map = _dots.ToDictionary(d => d, v => true);
+                var map = new HashSet<(int X, int Y)>(_dots);
 
                 foreach (var instruction in _instructions)
                 {
                     if (instruction.X > 0)
                     {
-                        foreach (var dot in map.Where(d => d.Key.X > instruction.X).ToArray())
+                        foreach (var dot in map.Where(d => d.X > instruction.X).ToArray())
                         {
-                            var newX = instruction.X - (dot.Key.X - instruction.X);
-                            map[(newX, dot.Key.Y)] = true;
-                            map.Remove(dot.Key);
+                            map.Remove(dot);
+                            map.Add((instruction.X - (dot.X - instruction.X), dot.Y));
                         }
                     }
                     else
                     {
-                        foreach (var dot in map.Where(d => d.Key.Y > instruction.Y).ToArray())
+                        foreach (var dot in map.Where(d => d.Y > instruction.Y).ToArray())
                         {
-                            var newY = instruction.Y - (dot.Key.Y - instruction.Y);
-                            map[(dot.Key.X, newY)] = true;
-                            map.Remove(dot.Key);
+                            map.Remove(dot);
+                            map.Add((dot.X, instruction.Y - (dot.Y - instruction.Y)));
                         }
                     }
                 }
 
                 return new string(map
-                    .GroupBy(v => v.Key.X/5, kv => (X: kv.Key.X%5, kv.Key.Y))
+                    .GroupBy(v => v.X / 5, kv => (X: kv.X % 5, kv.Y))
                     .OrderBy(c => c.Key)
                     .Select(c => c.GetCharFrom4x6PixelMapping())
                     .ToArray());
